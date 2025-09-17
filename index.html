@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Diario con IA</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f9; }
+    #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; background: #fff; }
+    input, button { padding: 10px; margin: 5px 0; width: 100%; }
+  </style>
+</head>
+<body>
+  <h1>Mi Diario con IA</h1>
+  <div id="chat"></div>
+  <input id="pregunta" type="text" placeholder="Escribe tu pregunta...">
+  <button onclick="preguntar()">Preguntar</button>
+
+  <script>
+    // Por ahora la "IA" es muy simple: solo busca palabras dentro de los diarios
+    async function preguntar() {
+      const pregunta = document.getElementById("pregunta").value.toLowerCase();
+      const chat = document.getElementById("chat");
+
+      // Cargar el archivo de diarios
+      const res = await fetch("diarios/primer.txt");
+      const texto = await res.text();
+
+      let respuesta = "No encontré nada en tus diarios...";
+      if (texto.toLowerCase().includes(pregunta)) {
+        respuesta = "Encontré algo relacionado en tu diario:\n\n" + texto;
+      }
+
+      chat.innerHTML += "<p><b>Tú:</b> " + pregunta + "</p>";
+      chat.innerHTML += "<p><b>IA:</b> " + respuesta + "</p>";
+      document.getElementById("pregunta").value = "";
+    }
+  </script>
+</body>
+</html>
